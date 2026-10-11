@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.frank.jevving.domain.entities.SupportTeam;
 import com.frank.jevving.domain.exceptions.InvalidAssessmentException;
 import com.frank.jevving.domain.valueobjects.Answer;
+import com.frank.jevving.domain.valueobjects.DecisionThresholds;
 import com.frank.jevving.domain.valueobjects.DispatchStatus;
 import com.frank.jevving.domain.valueobjects.TeamDecision;
 import java.util.List;
@@ -18,7 +19,7 @@ class TeamDeciderTest {
     private static final List<SupportTeam> TEAMS =
             List.of(DEVOPS, new SupportTeam("developers", "Software bugs"));
 
-    private final TeamDecider decider = new TeamDecider(0.7);
+    private final TeamDecider decider = new TeamDecider(new DecisionThresholds(0.9, 0.7));
 
     @Test
     void assignsChosenTeamWhenConfident() {

@@ -13,6 +13,7 @@ import com.frank.jevving.domain.service.TeamDecider;
 import com.frank.jevving.domain.service.UrgencyDecider;
 import com.frank.jevving.domain.valueobjects.Answer;
 import com.frank.jevving.domain.valueobjects.Answers;
+import com.frank.jevving.domain.valueobjects.DecisionThresholds;
 import com.frank.jevving.domain.valueobjects.DispatchStatus;
 import com.frank.jevving.domain.valueobjects.Questions;
 import com.frank.jevving.domain.valueobjects.Severity;
@@ -30,6 +31,8 @@ class CreateTicketServiceTest {
     private static final SupportTeam DEVOPS = new SupportTeam("devops", "Infrastructure problems");
     private static final SupportTeam DEVELOPERS = new SupportTeam("developers", "Software bugs");
     private static final SupportTeamRepository TEAMS = () -> Uni.createFrom().item(List.of(DEVOPS, DEVELOPERS));
+
+    private static final DecisionThresholds THRESHOLDS = new DecisionThresholds(0.9, 0.7);
 
     InMemoryTicketRepository tickets;
     AtomicReference<Questions> askedQuestions;
@@ -125,7 +128,7 @@ class CreateTicketServiceTest {
             askedQuestions.set(questions);
             return Uni.createFrom().item(answers);
         };
-        return new CreateTicketService(TEAMS, tickets, assessor, new UrgencyDecider(0.9), new TeamDecider(0.7));
+        return new CreateTicketService(TEAMS, tickets, assessor, new UrgencyDecider(THRESHOLDS), new TeamDecider(THRESHOLDS));
     }
 
     private static Answers answers(double urgency, String teamId) {

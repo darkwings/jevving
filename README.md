@@ -284,7 +284,7 @@ Jev is stubbed with WireMock, so tests run offline and without an API key.
 
 Hexagonal, under `com.frank.jevving`:
 
-- `domain`: entities (`Ticket`, `SupportTeam`), value objects, domain services (`UrgencyDecider`, `TeamDecider`), exceptions and ports (`TicketRepository`, `SupportTeamRepository`, `RequestAssessor`). It knows nothing about Jev or HTTP.
+- `domain`: entities (`Ticket`, `SupportTeam`), value objects, domain services (`UrgencyDecider`, `TeamDecider`), exceptions and ports (`TicketRepository`, `SupportTeamRepository`, `RequestAssessor`). It knows nothing about Jev or HTTP and does not read the configuration: the thresholds it needs reach it as a `DecisionThresholds` value built in `infrastructure/config`.
 - `application`: use cases `CreateTicketUseCase` and `AssignTicketUseCase` and their services, which orchestrate the ports.
 - `infrastructure`: adapters. `jev/JevAssessor` implements `RequestAssessor` through the Jev REST client; `persistence/repositories` holds the in-memory repositories.
 - `presentation/http`: REST resource, DTOs, DTO ↔ command/domain mappers and the mapping of domain exceptions to HTTP status codes.

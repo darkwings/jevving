@@ -3,23 +3,23 @@ package com.frank.jevving.domain.service;
 import com.frank.jevving.domain.entities.SupportTeam;
 import com.frank.jevving.domain.exceptions.InvalidAssessmentException;
 import com.frank.jevving.domain.valueobjects.Answer;
+import com.frank.jevving.domain.valueobjects.DecisionThresholds;
 import com.frank.jevving.domain.valueobjects.Question;
 import com.frank.jevving.domain.valueobjects.TeamDecision;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/** Decides whether the team chosen by the assessor can be assigned or needs a human review. */
 @ApplicationScoped
 public class TeamDecider {
 
     private final double limit;
 
-    public TeamDecider(@ConfigProperty(name = "dispatch.confidence-limit") double limit) {
-        this.limit = limit;
+    public TeamDecider(DecisionThresholds thresholds) {
+        this.limit = thresholds.confidenceLimit();
     }
 
     /**
